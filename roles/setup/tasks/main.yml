@@ -1,0 +1,24 @@
+---
+- name: Updating all current packages to the latest version
+  apt:
+    update_cache: yes
+
+- name: Adding apt repository https access
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+
+- name: Installing awscli, jq and nginx
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - awscli
+    - jq
+    - nginx
+...

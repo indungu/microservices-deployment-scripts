@@ -1,0 +1,37 @@
+{
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-2",
+    "source_ami": "ami-0552e3455b9bc8d50",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "jenkins-k8s-{{timestamp}}",
+    "run_tags": {
+      "name": "jenkins-k8s",
+      "role": "ubuntu-1604"
+    },
+    "tags": {
+      "role": "ubuntu-1604-image",
+      "version": "v1.0",
+      "Name": "jenkins-k8s-{{timestamp}}"
+    }
+  }],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "k8s_setup.sh",
+      "destination": "/home/ubuntu/k8s_setup.sh"
+    },
+    {
+      "type": "file",
+      "source": ".env",
+      "destination": "/home/ubuntu/.creds"
+    },
+    {
+      "type": "ansible",
+      "playbook_file": "playbook.yml"
+    }
+  ]
+}

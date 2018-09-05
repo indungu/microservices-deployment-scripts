@@ -1,0 +1,31 @@
+---
+- name: Adding Docker gpg key and ppa
+  shell: |
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+- name: Updating docker-ce apt-cache
+  shell: |
+    apt-cache policy docker-ce
+    apt-get update
+  
+- name: Installing Docker
+  apt:
+    name: docker-ce
+    state: latest
+  update_cache: yes
+
+- name: Installing Docker compose
+  shell: |
+    sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+
+- name: Adding jenkins user to the docker users group
+  shell: usermod -a -G docker jenkins
+
+- name: Configuring Docker service
+  service:
+    name: docker
+    enabled: yes
+    state: started
+...

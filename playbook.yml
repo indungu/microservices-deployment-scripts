@@ -1,0 +1,19 @@
+---
+# A simple Ansible setup
+
+- hosts: all
+  become: yes
+  become_method: sudo
+  become_user: root
+  remote_user: ubuntu
+  vars:
+    ansible_python_interpreter: "/usr/bin/python3"
+
+  roles:
+    - setup
+    - jenkins 
+    - nginx
+    - k8s-tools
+    - docker
+    - aws
+...

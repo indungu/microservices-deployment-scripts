@@ -1,0 +1,13 @@
+---
+- name: Configuring aws
+  shell: |
+    mkdir -p /home/ubuntu/.aws/
+    chown ubuntu:ubuntu /home/ubuntu/.aws/
+    bash -c 'cat /home/ubuntu/.creds > /home/ubuntu/.aws/credentials'
+    bash -c 'cat <<EOF > /home/ubuntu/.aws/config
+      [default]
+      region = us-east-2
+      output = json
+
+    EOF'
+...

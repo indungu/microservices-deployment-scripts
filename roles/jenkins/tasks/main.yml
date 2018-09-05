@@ -1,0 +1,27 @@
+---
+- name: Adding Jenkins PPA
+  shell: |
+    wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+    sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+
+- name: Updating packages
+  apt:
+    update_cache: yes
+
+- name: Installing open-jdk8
+  apt:
+    name: openjdk-8-jdk
+    state: latest
+    install-recommends: no
+
+- name: Installing Jenkins
+  apt:
+    name: jenkins
+    state: present
+
+- name: Configuring Jenkins service
+  service:
+    name: jenkins
+    enabled: yes
+    state: started
+...
